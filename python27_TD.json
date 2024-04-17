@@ -32,8 +32,8 @@
                     "value": "MyPythonApp_EnvVariable"
                 },
                 {
-                    "name": "OTEL_RESOURCE_ATTRIBUTES",
-                    "value": "deployment.environment=Python-prod-sookyung"
+                    "name": "SIGNALFX_ENV",
+                    "value": "Python-prod-sookyung"
                 },
                 {
                     "name": "SIGNALFX_ACCESS_TOKEN",
