@@ -1,5 +1,5 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:432274630114:task-definition/sookyung-python27:5",
+    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:432274630114:task-definition/sookyung-python27:19",
     "containerDefinitions": [
         {
             "name": "sookyung-python27",
@@ -28,20 +28,24 @@
                     "value": "https://ingest.us1.signalfx.com/v2/trace/jaegerthrift"
                 },
                 {
-                    "name": "SIGNALFX_ACCESS_TOKEN",
-                    "value": "RBde2oHa77ZPu95DWI9Jyw"
-                },
-                {
                     "name": "SIGNALFX_SERVICE_NAME",
                     "value": "MyPythonApp_EnvVariable"
                 },
                 {
-                    "name": "OTEL_EXPORTER_OTLP_ENDPOINT",
-                    "value": "http://172.17.0.1:4317"
+                    "name": "OTEL_RESOURCE_ATTRIBUTES",
+                    "value": "deployment.environment=Python-prod-sookyung"
+                },
+                {
+                    "name": "SIGNALFX_ACCESS_TOKEN",
+                    "value": "RBde2oHa77ZPu95DWI9Jyw"
                 },
                 {
                     "name": "SPLUNK_METRICS_ENDPOINT",
                     "value": "http://172.17.0.1:9943"
+                },
+                {
+                    "name": "OTEL_EXPORTER_OTLP_ENDPOINT",
+                    "value": "http://172.17.0.1:4317"
                 }
             ],
             "mountPoints": [],
@@ -57,93 +61,95 @@
             },
             "systemControls": []
         },
-    {
-        "name": "splunk-otel-collector",
-        "image": "quay.io/signalfx/splunk-otel-collector:0.96.1",
-        "cpu": 512,
-        "memory": 512,
-        "portMappings": [
-            {
-                "name": "splunk-otel-collector-4317-tcp",
-                "containerPort": 4317,
-                "hostPort": 4317,
-                "protocol": "tcp"
-            },
-            {
-                "name": "14250",
-                "containerPort": 14250,
-                "hostPort": 14250,
-                "protocol": "tcp"
-            }
-        ],
-        "essential": true,
-        "environment": [
-            {
-                "name": "METRICS_TO_EXCLUDE",
-                "value": "[]"
-            },
-            {
-                "name": "HOST_DEV",
-                "value": "/hostfs/dev"
-            },
-            {
-                "name": "HOST_ETC",
-                "value": "/hostfs/etc"
-            },
-            {
-                "name": "HOST_PROC",
-                "value": "/hostfs/proc"
-            },
-            {
-                "name": "SPLUNK_REALM",
-                "value": "us1"
-            },
-            {
-                "name": "SPLUNK_ACCESS_TOKEN",
-                "value": "RBde2oHa77ZPu95DWI9Jyw"
-            },
-            {
-                "name": "HOST_SYS",
-                "value": "/hostfs/sys"
-            },
-            {
-                "name": "HOST_RUN",
-                "value": "/hostfs/run"
-            },
-            {
-                "name": "SIGNALFX_SERVICE_NAME",
-                "value": "SooKyung-python27"
-            },
-            {
-                "name": "ECS_METADATA_EXCLUDED_IMAGES",
-                "value": "[\"quay.io/signalfx/splunk-otel-collector\"]"
-            },
-            {
-                "name": "HOST_VAR",
-                "value": "/hostfs/var"
-            }
-        ],
-        "mountPoints": [
-            {
-                "sourceVolume": "hostfs",
-                "containerPath": "/hostfs",
-                "readOnly": true
-            }
-        ],
-        "volumesFrom": [],
-        "secrets": [
-            {
-                "name": "SPLUNK_CONFIG_YAML",
-                "valueFrom": "arn:aws:ssm:ap-northeast-2:432274630114:parameter/splunk-otel-collector-config"
-            }
-        ],
-        "systemControls": []
-    }
-],
+        {
+            "name": "splunk-otel-collector",
+            "image": "quay.io/signalfx/splunk-otel-collector:0.96.1",
+            "cpu": 512,
+            "memory": 512,
+            "portMappings": [
+                {
+                    "name": "splunk-otel-collector-4317-tcp",
+                    "containerPort": 4317,
+                    "hostPort": 4317,
+                    "protocol": "tcp"
+                },
+                {
+                    "name": "14250",
+                    "containerPort": 14250,
+                    "hostPort": 14250,
+                    "protocol": "tcp"
+                },
+                {
+                    "name": "14268",
+                    "containerPort": 14268,
+                    "hostPort": 14268,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "METRICS_TO_EXCLUDE",
+                    "value": "[]"
+                },
+                {
+                    "name": "HOST_DEV",
+                    "value": "/hostfs/dev"
+                },
+                {
+                    "name": "HOST_ETC",
+                    "value": "/hostfs/etc"
+                },
+                {
+                    "name": "HOST_PROC",
+                    "value": "/hostfs/proc"
+                },
+                {
+                    "name": "SPLUNK_REALM",
+                    "value": "us1"
+                },
+                {
+                    "name": "SPLUNK_ACCESS_TOKEN",
+                    "value": "RBde2oHa77ZPu95DWI9Jyw"
+                },
+                {
+                    "name": "HOST_SYS",
+                    "value": "/hostfs/sys"
+                },
+                {
+                    "name": "HOST_RUN",
+                    "value": "/hostfs/run"
+                },
+                {
+                    "name": "ECS_METADATA_EXCLUDED_IMAGES",
+                    "value": "[\"quay.io/signalfx/splunk-otel-collector\"]"
+                },
+                {
+                    "name": "HOST_VAR",
+                    "value": "/hostfs/var"
+                }
+            ],
+            "mountPoints": [
+                {
+                    "sourceVolume": "hostfs",
+                    "containerPath": "/hostfs",
+                    "readOnly": true
+                }
+            ],
+            "volumesFrom": [],
+            "secrets": [
+                {
+                    "name": "SPLUNK_CONFIG_YAML",
+                    "valueFrom": "arn:aws:ssm:ap-northeast-2:432274630114:parameter/splunk-otel-collector-config"
+                }
+            ],
+            "systemControls": []
+        }
+    ],
     "family": "sookyung-python27",
     "executionRoleArn": "arn:aws:iam::432274630114:role/ecsTaskExecutionRole",
-    "networkMode": "host",
-    "revision": 5,
+    "networkMode": "bridge",
+    "revision": 19,
     "volumes": [
         {
             "name": "hostfs",
@@ -164,7 +170,7 @@
             "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
         },
         {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+            "name": "ecs.capability.secrets.ssm.environment-variables"
         },
         {
             "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
@@ -183,7 +189,7 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2024-04-12T05:43:39.008Z",
+    "registeredAt": "2024-04-17T01:56:35.163Z",
     "registeredBy": "arn:aws:iam::432274630114:user/sookyung",
     "tags": []
 }
